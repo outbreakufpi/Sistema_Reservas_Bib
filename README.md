@@ -9,7 +9,7 @@
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/outbreakufpi/Sistema_Reservas
+git clone https://github.com/outbreakufpi/Sistema_Reservas_Bib
 cd Sistema_Reservas
 ```
 
