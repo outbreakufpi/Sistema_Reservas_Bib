@@ -10,7 +10,7 @@
 1. Clone o repositório:
 ```bash
 git clone https://github.com/outbreakufpi/Sistema_Reservas_Bib
-cd Sistema_Reservas
+cd Sistema_Reservas_Bib
 ```
 
 2. Instale as dependências:
