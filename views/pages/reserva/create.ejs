@@ -1,0 +1,56 @@
+<%- include('../../layouts/main') %>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Nova Reserva - <%= sala.nome %></h3>
+            </div>
+            <div class="card-body">
+                <form action="/reservas" method="POST">
+                    <input type="hidden" name="sala_id" value="<%= sala.id %>">
+                    
+                    <div class="mb-3">
+                        <label for="data_inicio" class="form-label">Data e Hora de Início</label>
+                        <input type="datetime-local" class="form-control" id="data_inicio" name="data_inicio" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="data_fim" class="form-label">Data e Hora de Término</label>
+                        <input type="datetime-local" class="form-control" id="data_fim" name="data_fim" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="motivo" class="form-label">Motivo da Reserva</label>
+                        <textarea class="form-control" id="motivo" name="motivo" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Criar Reserva</button>
+                        <a href="/salas" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    const dataInicio = new Date(document.getElementById('data_inicio').value);
+    const dataFim = new Date(document.getElementById('data_fim').value);
+    const agora = new Date();
+
+    if (dataInicio < agora) {
+        e.preventDefault();
+        alert('A data de início não pode ser no passado!');
+        return;
+    }
+
+    if (dataFim <= dataInicio) {
+        e.preventDefault();
+        alert('A data de término deve ser posterior à data de início!');
+        return;
+    }
+});
+</script> 

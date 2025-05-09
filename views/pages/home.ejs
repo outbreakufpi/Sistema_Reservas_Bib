@@ -1,0 +1,45 @@
+<%- include('../layouts/main') %>
+
+<div class="jumbotron">
+    <h1 class="display-4">Bem-vindo ao Sistema de Reserva de Salas</h1>
+    <p class="lead">Sistema para gerenciamento de reservas de salas da biblioteca.</p>
+    <hr class="my-4">
+    <p>Faça login ou registre-se para começar a fazer reservas.</p>
+    <% if (!user) { %>
+        <a class="btn btn-primary btn-lg" href="/auth/login" role="button">Login</a>
+        <a class="btn btn-secondary btn-lg" href="/auth/register" role="button">Registrar</a>
+    <% } else { %>
+        <a class="btn btn-primary btn-lg" href="/salas" role="button">Ver Salas</a>
+        <a class="btn btn-secondary btn-lg" href="/reservas/minhas" role="button">Minhas Reservas</a>
+    <% } %>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Reserve uma Sala</h5>
+                <p class="card-text">Encontre e reserve a sala perfeita para seus estudos ou reuniões.</p>
+                <a href="/salas" class="btn btn-primary">Ver Salas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Gerencie Reservas</h5>
+                <p class="card-text">Visualize e gerencie suas reservas de forma fácil e rápida.</p>
+                <a href="/reservas/minhas" class="btn btn-primary">Minhas Reservas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Horários Disponíveis</h5>
+                <p class="card-text">Verifique a disponibilidade das salas em tempo real.</p>
+                <a href="/salas" class="btn btn-primary">Verificar</a>
+            </div>
+        </div>
+    </div>
+</div> 

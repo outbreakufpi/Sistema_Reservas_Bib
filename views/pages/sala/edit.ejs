@@ -1,0 +1,39 @@
+<%- include('../../layouts/main') %>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Editar Sala</h3>
+            </div>
+            <div class="card-body">
+                <form action="/salas/<%= sala.id %>?_method=PUT" method="POST">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome da Sala</label>
+                        <input type="text" class="form-control" id="nome" name="nome" value="<%= sala.nome %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="capacidade" class="form-label">Capacidade</label>
+                        <input type="number" class="form-control" id="capacidade" name="capacidade" value="<%= sala.capacidade %>" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="descricao" name="descricao" rows="3"><%= sala.descricao %></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status" required>
+                            <option value="disponivel" <%= sala.status === 'disponivel' ? 'selected' : '' %>>Disponível</option>
+                            <option value="manutencao" <%= sala.status === 'manutencao' ? 'selected' : '' %>>Manutenção</option>
+                            <option value="indisponivel" <%= sala.status === 'indisponivel' ? 'selected' : '' %>>Indisponível</option>
+                        </select>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Atualizar Sala</button>
+                        <a href="/salas" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

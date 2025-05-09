@@ -1,0 +1,53 @@
+<%- include('../../layouts/main') %>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Registro</h3>
+            </div>
+            <div class="card-body">
+                <form action="/auth/register" method="POST">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="matricula" class="form-label">Matrícula</label>
+                        <input type="text" class="form-control" id="matricula" name="matricula" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" name="senha" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+                        <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Já tem uma conta? <a href="/auth/login">Faça login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    const senha = document.getElementById('senha').value;
+    const confirmarSenha = document.getElementById('confirmarSenha').value;
+
+    if (senha !== confirmarSenha) {
+        e.preventDefault();
+        alert('As senhas não coincidem!');
+    }
+});
+</script> 

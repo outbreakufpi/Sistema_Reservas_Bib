@@ -1,0 +1,52 @@
+<%- include('../../layouts/main') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Minhas Reservas</h2>
+    <a href="/salas" class="btn btn-primary">Nova Reserva</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Sala</th>
+                <th>Data Início</th>
+                <th>Data Término</th>
+                <th>Motivo</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% reservas.forEach(reserva => { %>
+                <tr>
+                    <td><%= reserva.Sala.nome %></td>
+                    <td><%= new Date(reserva.data_inicio).toLocaleString() %></td>
+                    <td><%= new Date(reserva.data_fim).toLocaleString() %></td>
+                    <td><%= reserva.motivo %></td>
+                    <td>
+                        <span class="badge <%= reserva.status === 'confirmada' ? 'bg-success' : reserva.status === 'pendente' ? 'bg-warning' : 'bg-danger' %>">
+                            <%= reserva.status %>
+                        </span>
+                    </td>
+                    <td>
+                        <% if (reserva.status !== 'cancelada') { %>
+                            <form action="/reservas/<%= reserva.id %>/cancel" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja cancelar esta reserva?')">
+                                    Cancelar
+                                </button>
+                            </form>
+                        <% } %>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<% if (reservas.length === 0) { %>
+    <div class="alert alert-info">
+        Você não possui nenhuma reserva.
+        <a href="/salas">Faça uma nova reserva</a>
+    </div>
+<% } %> 

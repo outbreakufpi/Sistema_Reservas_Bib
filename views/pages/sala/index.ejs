@@ -1,0 +1,54 @@
+<%- include('../../layouts/main') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Salas Disponíveis</h2>
+    <% if (user && user.role === 'admin') { %>
+        <a href="/salas/create" class="btn btn-primary">Nova Sala</a>
+    <% } %>
+</div>
+
+<div class="row">
+    <% salas.forEach(sala => { %>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><%= sala.nome %></h5>
+                    <p class="card-text">
+                        <strong>Capacidade:</strong> <%= sala.capacidade %> pessoas<br>
+                        <strong>Status:</strong> 
+                        <span class="badge <%= sala.status === 'disponivel' ? 'bg-success' : sala.status === 'manutencao' ? 'bg-warning' : 'bg-danger' %>">
+                            <%= sala.status %>
+                        </span>
+                    </p>
+                    <% if (sala.descricao) { %>
+                        <p class="card-text"><%= sala.descricao %></p>
+                    <% } %>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <% if (user) { %>
+                            <a href="/reservas/create/<%= sala.id %>" class="btn btn-primary">Reservar</a>
+                        <% } else { %>
+                            <a href="/auth/login" class="btn btn-primary">Login para Reservar</a>
+                        <% } %>
+                        <% if (user && user.role === 'admin') { %>
+                            <div>
+                                <a href="/salas/<%= sala.id %>/edit" class="btn btn-warning btn-sm">Editar</a>
+                                <form action="/salas/<%= sala.id %>?_method=DELETE" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir esta sala?')">Excluir</button>
+                                </form>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% }); %>
+</div>
+
+<% if (salas.length === 0) { %>
+    <div class="alert alert-info">
+        Nenhuma sala cadastrada.
+        <% if (user && user.role === 'admin') { %>
+            <a href="/salas/create">Cadastre uma nova sala</a>
+        <% } %>
+    </div>
+<% } %> 
