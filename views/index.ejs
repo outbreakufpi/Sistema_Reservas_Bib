@@ -1,0 +1,35 @@
+<div class="row mb-4">
+    <div class="col">
+        <h1>Salas Disponíveis</h1>
+    </div>
+    <div class="col text-end">
+        <a href="/nova-reserva" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nova Reserva
+        </a>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <% salas.forEach(sala => { %>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><%= sala.nome %></h5>
+                    <p class="card-text">
+                        <strong>Capacidade:</strong> <%= sala.capacidade %> pessoas<br>
+                        <strong>Status:</strong> 
+                        <span class="badge <%= sala.status === 'disponivel' ? 'bg-success' : 'bg-danger' %>">
+                            <%= sala.status %>
+                        </span>
+                    </p>
+                    <p class="card-text"><small class="text-muted"><%= sala.descricao %></small></p>
+                </div>
+                <div class="card-footer">
+                    <a href="/nova-reserva?sala_id=<%= sala.id %>" class="btn btn-outline-primary btn-sm">
+                        Reservar
+                    </a>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+</div> 
