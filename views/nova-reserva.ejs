@@ -1,0 +1,84 @@
+<div class="row mb-4">
+    <div class="col">
+        <h1>Nova Reserva</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="formReserva" onsubmit="criarReserva(event)">
+            <div class="mb-3">
+                <label for="sala_id" class="form-label">Sala</label>
+                <select class="form-select" id="sala_id" name="sala_id" required>
+                    <option value="">Selecione uma sala</option>
+                    <% salas.forEach(sala => { %>
+                        <option value="<%= sala.id %>" 
+                                <%= request.query.sala_id == sala.id ? 'selected' : '' %>>
+                            <%= sala.nome %> (Capacidade: <%= sala.capacidade %>)
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="data_inicio" class="form-label">Data e Hora de Início</label>
+                <input type="datetime-local" class="form-control" id="data_inicio" name="data_inicio" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="data_fim" class="form-label">Data e Hora de Término</label>
+                <input type="datetime-local" class="form-control" id="data_fim" name="data_fim" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="motivo" class="form-label">Motivo da Reserva</label>
+                <textarea class="form-control" id="motivo" name="motivo" rows="3" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Criar Reserva</button>
+            <a href="/" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+<script>
+async function criarReserva(event) {
+    event.preventDefault();
+    
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Você precisa estar logado para fazer uma reserva');
+        window.location.href = '/login';
+        return;
+    }
+
+    const formData = {
+        sala_id: document.getElementById('sala_id').value,
+        data_inicio: document.getElementById('data_inicio').value,
+        data_fim: document.getElementById('data_fim').value,
+        motivo: document.getElementById('motivo').value
+    };
+
+    try {
+        const response = await fetch('/api/reservas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+            alert('Reserva criada com sucesso!');
+            window.location.href = '/minhas-reservas';
+        } else {
+            const data = await response.json();
+            alert(data.error || 'Erro ao criar reserva');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao criar reserva');
+    }
+}
+</script> 

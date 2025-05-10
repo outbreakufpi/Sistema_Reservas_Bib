@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reservas - Sistema de Reservas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">Sistema de Reservas</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/minhas-reservas">Minhas Reservas</a>
+                    </li>
+                    <% if (user && user.tipo === 'admin') { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/salas">Gerenciar Salas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin/reservas">Gerenciar Reservas</a>
+                        </li>
+                    <% } %>
+                </ul>
+                <button class="btn btn-outline-light" onclick="logout()">Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>Reservas</h2>
+            </div>
+            <div class="col text-end">
+                <a href="/nova-reserva" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Nova Reserva
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sala</th>
+                                <th>Usuário</th>
+                                <th>Data Início</th>
+                                <th>Data Fim</th>
+                                <th>Motivo</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% reservas.forEach(reserva => { %>
+                                <tr>
+                                    <td><%= reserva.sala_nome %></td>
+                                    <td><%= reserva.usuario_nome %></td>
+                                    <td><%= new Date(reserva.data_inicio).toLocaleString() %></td>
+                                    <td><%= new Date(reserva.data_fim).toLocaleString() %></td>
+                                    <td><%= reserva.motivo %></td>
+                                    <td>
+                                        <span class="badge <%= reserva.status === 'pendente' ? 'bg-warning' : 
+                                                            reserva.status === 'confirmada' ? 'bg-success' : 
+                                                            'bg-danger' %>">
+                                            <%= reserva.status %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <% if (reserva.status !== 'cancelada') { %>
+                                            <button class="btn btn-danger btn-sm" 
+                                                    onclick="cancelarReserva(<%= reserva.id %>)">
+                                                <i class="bi bi-x-circle"></i> Cancelar
+                                            </button>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Verificar autenticação
+        const token = localStorage.getItem('token');
+        const userType = localStorage.getItem('userType');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        async function cancelarReserva(id) {
+            if (confirm('Tem certeza que deseja cancelar esta reserva?')) {
+                try {
+                    const response = await fetch(`/api/reservas/${id}/cancelar`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Erro ao cancelar reserva');
+                    }
+                } catch (error) {
+                    console.error('Erro:', error);
+                    alert('Erro ao cancelar reserva');
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userType');
+            localStorage.removeItem('userName');
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+</html> 
